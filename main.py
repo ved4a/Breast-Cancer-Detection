@@ -31,3 +31,38 @@ log_reg = LogisticRegression(learning_rate=0.01, iterations=1000)
 log_reg.fit(X_train, y_train)
 
 y_pred = log_reg.prediction(X_test)
+
+# plot predictions: True Positives, True Negatives, False Positives, False Negatives
+# x-axis for true labels, y-axis for predicted labels
+# y_test_np = np.array(y_test)
+
+# plt.figure(figsize=(10, 6))
+
+# plt.scatter(np.where((y_test_np == 1) & (y_pred == 1))[0], 
+#             np.ones(len(np.where((y_test_np == 1) & (y_pred == 1))[0])), 
+#             color='green', label='True Positives (TP)')
+
+# plt.scatter(np.where((y_test_np == 0) & (y_pred == 0))[0], 
+#             np.zeros(len(np.where((y_test_np == 0) & (y_pred == 0))[0])), 
+#             color='blue', label='True Negatives (TN)')
+
+# plt.scatter(np.where((y_test_np == 0) & (y_pred == 1))[0], 
+#             np.ones(len(np.where((y_test_np == 0) & (y_pred == 1))[0])), 
+#             color='red', label='False Positives (FP)')
+
+# plt.scatter(np.where((y_test_np == 1) & (y_pred == 0))[0], 
+#             np.zeros(len(np.where((y_test_np == 1) & (y_pred == 0))[0])), 
+#             color='yellow', label='False Negatives (FN)')
+
+# # quadrants
+# plt.axhline(0.5, color='black', linestyle='--', linewidth=1)
+# plt.axvline(len(y_test) / 2, color='black', linestyle='--', linewidth=1)
+
+# plt.title("Logistic Regression Predictions")
+# plt.xlabel("Sample Index")
+# plt.yticks([0, 1], ["Benign (0)", "Malignant (1)"])
+# plt.legend()
+# plt.grid(alpha=0.3)
+
+# # Display the plot
+# plt.show()
