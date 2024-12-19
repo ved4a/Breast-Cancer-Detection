@@ -17,17 +17,6 @@ y = breast_cancer_wisconsin_diagnostic.data.targets['Diagnosis']
 # map 'malignant' and 'benign' to 1 and 0
 y = y.map({'M': 1, 'B' : 0})
 
-# view first 5 rows
-print(X.head())
-print(y.head())
-
-# check shape
-print(X.shape)
-print(y.shape)
-
-# describe X
-print(X.describe())
-
 # split into training and test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
