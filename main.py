@@ -37,33 +37,30 @@ y_pred = log_reg.prediction(X_test)
 y_test_np = np.array(y_test)
 y_pred_np = np.array(y_pred)
 
-plt.figure(figsize=(10, 6))
+TP = np.sum((y_test_np == 1) & (y_pred_np == 1))
+TN = np.sum((y_test_np == 0) & (y_pred_np == 0))
+FP = np.sum((y_test_np == 0) & (y_pred_np == 1))
+FN = np.sum((y_test_np == 1) & (y_pred_np == 0))
 
-plt.scatter(np.where((y_test_np == 1) & (y_pred_np == 1))[0], 
-            np.ones(len(np.where((y_test_np == 1) & (y_pred_np == 1))[0])), 
-            color='green', label='True Positives (TP)')
+heatmap_data = np.array([[TN, FP], [FN, TP]])
+labels = np.array([["TN", "FP"], ["FN", "TP"]])
+annot_labels = np.array([
+    [f"True Negatives\n{TN}", f"False Positives\n{FP}"],
+    [f"False Negatives\n{FN}", f"True Positives\n{TP}"]
+])
 
-plt.scatter(np.where((y_test_np == 0) & (y_pred_np == 0))[0], 
-            np.zeros(len(np.where((y_test_np == 0) & (y_pred_np == 0))[0])), 
-            color='blue', label='True Negatives (TN)')
+plt.figure(figsize=(8, 6))
+ax = sns.heatmap(
+    heatmap_data, 
+    annot=annot_labels, 
+    fmt='', 
+    cmap="YlOrRd", 
+    cbar=True, 
+    xticklabels=["Benign", "Malignant"],
+    yticklabels=["Benign", "Malignant"]
+)
 
-plt.scatter(np.where((y_test_np == 0) & (y_pred_np == 1))[0], 
-            np.ones(len(np.where((y_test_np == 0) & (y_pred_np == 1))[0])), 
-            color='red', label='False Positives (FP)')
-
-plt.scatter(np.where((y_test_np == 1) & (y_pred_np == 0))[0], 
-            np.zeros(len(np.where((y_test_np == 1) & (y_pred_np == 0))[0])), 
-            color='yellow', label='False Negatives (FN)')
-
-# # quadrants
-plt.axhline(0.5, color='black', linestyle='--', linewidth=1)
-plt.axvline(len(y_test) / 2, color='black', linestyle='--', linewidth=1)
-
-plt.title("Logistic Regression Predictions")
-plt.xlabel("Sample Index")
-plt.yticks([0, 1], ["Benign (0)", "Malignant (1)"])
-plt.legend()
-plt.grid(alpha=0.3)
-
-# # Display the plot
+plt.title("Confusion Quadrant Heatmap")
+plt.xlabel("Predicted Label")
+plt.ylabel("True Label")
 plt.show()
