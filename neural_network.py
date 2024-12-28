@@ -21,6 +21,12 @@ class NeuralNetwork:
 
     def sigmoid_derivative(self, a):
         return a * (1 - a)
+    
+    def relu(self, z):
+        return np.maximum(0, z)
+    
+    def relu_derivative(self, z):
+        return (z > 0).astype(float)
 
     def forward(self, X):
         self.z1 = np.dot(X, self.W1) + self.b1
