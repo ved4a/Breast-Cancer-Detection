@@ -1,6 +1,7 @@
 from ucimlrepo import fetch_ucirepo
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import accuracy_score
 
 from logistic_reg import LogisticRegression
 from neural_network import NeuralNetwork
@@ -63,6 +64,9 @@ plt.xlabel("Predicted Label")
 plt.ylabel("True Label")
 plt.show()
 
+accuracy_log_reg = accuracy_score(y_test, y_pred_log_reg)
+print(f"Logistic Regression Accuracy: {accuracy_log_reg:.4f}")
+
 # Neural Network
 nn = NeuralNetwork(input_size=X_train.shape[1], hidden_size=10, output_size=1, learning_rate=0.01, lambda_reg=0.01)
 nn.train(X_train, y_train, X_test, y_test, max_iters=500, patience=20)
@@ -97,3 +101,6 @@ plt.title("Neural Network: Confusion Quadrant")
 plt.xlabel("Predicted Label")
 plt.ylabel("True Label")
 plt.show()
+
+accuracy_nn = accuracy_score(y_test, y_pred_nn)
+print(f"Neural Network Accuracy: {accuracy_nn:.4f}")
