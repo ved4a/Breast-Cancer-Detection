@@ -15,11 +15,12 @@ class NeuralNetwork:
         self.b1 = np.zeros(hidden_size)
         self.W2 = np.random.uniform(-limit_output, limit_output, (hidden_size, output_size))
         self.b2 = np.zeros(output_size)
+
     def sigmoid(self, z):
         return 1 / (1 + np.exp(-z))
 
-    def sigmoid_derivative(self, z):
-        return self.sigmoid(z) * (1 - self.sigmoid(z))
+    def sigmoid_derivative(self, a):
+        return a * (1 - a)
 
     def forward(self, X):
         self.z1 = np.dot(X, self.W1) + self.b1
