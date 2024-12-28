@@ -28,41 +28,37 @@ scaler = MinMaxScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-# baseline model: logistic regression
+# Logistic Regression [Baseline Model]
 log_reg = LogisticRegression(learning_rate=0.01, iterations=1000)
 log_reg.fit(X_train, y_train)
+y_pred_log_reg = log_reg.prediction(X_test)
 
-y_pred = log_reg.prediction(X_test)
-
-# plot predictions: True Positives, True Negatives, False Positives, False Negatives
-# x-axis for true labels, y-axis for predicted labels
+# Logistic Regression: Confusion Matrix and Heatmap
 y_test_np = np.array(y_test)
-y_pred_np = np.array(y_pred)
+y_pred_log_reg_np = np.array(y_pred_log_reg)
 
-TP = np.sum((y_test_np == 1) & (y_pred_np == 1))
-TN = np.sum((y_test_np == 0) & (y_pred_np == 0))
-FP = np.sum((y_test_np == 0) & (y_pred_np == 1))
-FN = np.sum((y_test_np == 1) & (y_pred_np == 0))
+TP_log_reg = np.sum((y_test_np == 1) & (y_pred_log_reg_np == 1))
+TN_log_reg = np.sum((y_test_np == 0) & (y_pred_log_reg_np == 0))
+FP_log_reg = np.sum((y_test_np == 0) & (y_pred_log_reg_np == 1))
+FN_log_reg = np.sum((y_test_np == 1) & (y_pred_log_reg_np == 0))
 
-heatmap_data = np.array([[TN, FP], [FN, TP]])
-labels = np.array([["TN", "FP"], ["FN", "TP"]])
-annot_labels = np.array([
-    [f"True Negatives\n{TN}", f"False Positives\n{FP}"],
-    [f"False Negatives\n{FN}", f"True Positives\n{TP}"]
+heatmap_data_log_reg = np.array([[TN_log_reg, FP_log_reg], [FN_log_reg, TP_log_reg]])
+annot_labels_log_reg = np.array([
+    [f"True Negatives\n{TN_log_reg}", f"False Positives\n{FP_log_reg}"],
+    [f"False Negatives\n{FN_log_reg}", f"True Positives\n{TP_log_reg}"]
 ])
 
 plt.figure(figsize=(8, 6))
-ax = sns.heatmap(
-    heatmap_data, 
-    annot=annot_labels, 
-    fmt='', 
-    cmap="YlOrRd", 
-    cbar=True, 
+sns.heatmap(
+    heatmap_data_log_reg,
+    annot=annot_labels_log_reg,
+    fmt='',
+    cmap="YlOrRd",
+    cbar=True,
     xticklabels=["Benign", "Malignant"],
     yticklabels=["Benign", "Malignant"]
 )
-
-plt.title("Confusion Quadrant Heatmap")
+plt.title("Logistic Regression: Confusion Quadrant")
 plt.xlabel("Predicted Label")
 plt.ylabel("True Label")
 plt.show()
