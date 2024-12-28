@@ -1,7 +1,9 @@
 from ucimlrepo import fetch_ucirepo
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+
 from logistic_reg import LogisticRegression
+from neural_network import NeuralNetwork
 
 import pandas as pd
 import numpy as np
