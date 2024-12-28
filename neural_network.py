@@ -1,11 +1,12 @@
 import numpy as np
 
 class NeuralNetwork:
-    def __init__(self, input_size, hidden_size, output_size, learning_rate):
+    def __init__(self, input_size, hidden_size, output_size, learning_rate, lambda_reg=0.01):
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.output_size = output_size
         self.learning_rate = learning_rate
+        self.lambda_reg = lambda_reg
 
         # Xavier method weight init
         limit_hidden = np.sqrt(6 / (input_size + hidden_size))
@@ -14,7 +15,6 @@ class NeuralNetwork:
         self.b1 = np.zeros(hidden_size)
         self.W2 = np.random.uniform(-limit_output, limit_output, (hidden_size, output_size))
         self.b2 = np.zeros(output_size)
-
     def sigmoid(self, z):
         return 1 / (1 + np.exp(-z))
 
