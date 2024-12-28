@@ -58,6 +58,9 @@ class NeuralNetwork:
         self.b2 -= self.learning_rate * self.db2
 
     def train(self, X_train, y_train, X_val, y_val, max_iters=500, patience=10):
+        y_train = y_train.values.reshape(-1, 1)
+        y_val = y_val.values.reshape(-1, 1)
+
         train_losses, val_losses, accuracies = [], [], []
         best_val_loss = float('inf')
         wait = 0
@@ -71,7 +74,7 @@ class NeuralNetwork:
             y_val_hat = self.forward(X_val)
             val_loss = self.compute_loss(y_val, y_val_hat)
 
-            val_acc = np.mean((y_val_hat > 0.5).astype(int).flatten() == y_val)
+            val_acc = np.mean((y_val_hat > 0.5).astype(int).flatten() == y_val.flatten())
 
             train_losses.append(train_loss)
             val_losses.append(val_loss)
