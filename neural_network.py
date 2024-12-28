@@ -51,13 +51,13 @@ class NeuralNetwork:
         self.dW1 = np.dot(X.T, delta1) / N + self.lambda_reg * self.W1
         self.db1 = np.sum(delta1, axis=0) / N
 
-    def update_weights(self, learning_rate):
-        self.W1 -= learning_rate * self.dW1
-        self.b1 -= learning_rate * self.db1
-        self.W2 -= learning_rate * self.dW2
-        self.b2 -= learning_rate * self.db2
+    def update_weights(self):
+        self.W1 -= self.learning_rate * self.dW1
+        self.b1 -= self.learning_rate * self.db1
+        self.W2 -= self.learning_rate * self.dW2
+        self.b2 -= self.learning_rate * self.db2
 
-    def train(self, X_train, y_train, X_val, y_val, learning_rate, max_iters=500, patience=10):
+    def train(self, X_train, y_train, X_val, y_val, max_iters=500, patience=10):
         train_losses, val_losses, accuracies = [], [], []
         best_val_loss = float('inf')
         wait = 0
@@ -66,7 +66,7 @@ class NeuralNetwork:
             y_train_hat = self.forward(X_train)
             train_loss = self.compute_loss(y_train, y_train_hat)
             self.backprop(X_train, y_train, y_train_hat)
-            self.update_weights(learning_rate)
+            self.update_weights()
 
             y_val_hat = self.forward(X_val)
             val_loss = self.compute_loss(y_val, y_val_hat)
