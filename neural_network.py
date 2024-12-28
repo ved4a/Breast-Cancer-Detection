@@ -36,7 +36,6 @@ class NeuralNetwork:
         return self.a2
 
     def compute_loss(self, y, y_hat):
-        N = y.shape[0]
         data_loss = -np.mean(y * np.log(y_hat + 1e-15) + (1 - y) * np.log(1 - y_hat + 1e-15))
         reg_loss = (self.lambda_reg / 2) * (np.sum(self.W1**2) + np.sum(self.W2**2))
         return data_loss + reg_loss
@@ -48,7 +47,7 @@ class NeuralNetwork:
         self.dW2 = np.dot(self.a1.T, delta2) / N + self.lambda_reg * self.W2
         self.db2 = np.sum(delta2, axis=0) / N
 
-        delta1 = np.dot(delta2, self.W2.T) * (1 - self.a1**2)
+        delta1 = np.dot(delta2, self.W2.T) * self.relu_derivative(self.z1)
         self.dW1 = np.dot(X.T, delta1) / N + self.lambda_reg * self.W1
         self.db1 = np.sum(delta1, axis=0) / N
 
