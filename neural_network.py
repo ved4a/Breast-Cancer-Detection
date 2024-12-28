@@ -30,7 +30,7 @@ class NeuralNetwork:
 
     def forward(self, X):
         self.z1 = np.dot(X, self.W1) + self.b1
-        self.a1 = self.sigmoid(self.z1)
+        self.a1 = self.relu(self.z1)
         self.z2 = np.dot(self.a1, self.W2) + self.b2
         self.a2 = self.sigmoid(self.z2)
         return self.a2
