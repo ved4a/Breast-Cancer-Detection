@@ -44,3 +44,20 @@ class DecisionTree:
         right_child = self._build_tree(X[right_idx], grad[right_idx], hess[right_idx], depth + 1)
 
         return TreeNode(feature=best_feature, threshold=best_threshold, left=left_child, right=right_child)
+    
+    def _compute_gain(self, X, grad, hess, feature, threshold):
+        left_idx = X[:, feature] <= threshold
+        right_idx = X[:, feature] > threshold
+
+        if np.sum(left_idx) == 0 or np.sum(right_idx) == 0:
+            return -np.inf
+
+        grad_left, grad_right = grad[left_idx], grad[right_idx]
+        hess_left, hess_right = hess[left_idx], hess[right_idx]
+
+        gain = (
+            (np.sum(grad_left)**2) / (np.sum(hess_left) + self.reg_lambda) +
+            (np.sum(grad_right)**2) / (np.sum(hess_right) + self.reg_lambda) -
+            (np.sum(grad)**2) / (np.sum(hess) + self.reg_lambda)
+        )
+        return gain
