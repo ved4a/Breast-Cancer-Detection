@@ -71,37 +71,7 @@ print(f"Logistic Regression Accuracy: {accuracy_log_reg:.4f}")
 # Neural Network
 nn = NeuralNetwork(input_size=X_train.shape[1], hidden_size=10, output_size=1, learning_rate=0.01, lambda_reg=0.01)
 nn.train(X_train, y_train, X_test, y_test, max_iters=500, patience=20)
-
 y_pred_nn = nn.predict(X_test)
-
-# Neural Network: Confusion Matrix and Heatmap
-y_pred_nn_np = np.array(y_pred_nn).flatten()
-
-TP_nn = np.sum((y_test_np == 1) & (y_pred_nn_np == 1))
-TN_nn = np.sum((y_test_np == 0) & (y_pred_nn_np == 0))
-FP_nn = np.sum((y_test_np == 0) & (y_pred_nn_np == 1))
-FN_nn = np.sum((y_test_np == 1) & (y_pred_nn_np == 0))
-
-heatmap_data_nn = np.array([[TN_nn, FP_nn], [FN_nn, TP_nn]])
-annot_labels_nn = np.array([
-    [f"True Negatives\n{TN_nn}", f"False Positives\n{FP_nn}"],
-    [f"False Negatives\n{FN_nn}", f"True Positives\n{TP_nn}"]
-])
-
-plt.figure(figsize=(8, 6))
-sns.heatmap(
-    heatmap_data_nn,
-    annot=annot_labels_nn,
-    fmt='',
-    cmap="YlGnBu",
-    cbar=True,
-    xticklabels=["Benign", "Malignant"],
-    yticklabels=["Benign", "Malignant"]
-)
-plt.title("Neural Network: Confusion Quadrant")
-plt.xlabel("Predicted Label")
-plt.ylabel("True Label")
-plt.show()
 
 accuracy_nn = accuracy_score(y_test, y_pred_nn)
 print(f"Neural Network Accuracy: {accuracy_nn:.4f}")
