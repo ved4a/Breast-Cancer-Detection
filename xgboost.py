@@ -61,3 +61,17 @@ class DecisionTree:
             (np.sum(grad)**2) / (np.sum(hess) + self.reg_lambda)
         )
         return gain
+    
+    def _compute_leaf_value(self, grad, hess):
+        return -np.sum(grad) / (np.sum(hess) + self.reg_lambda)
+
+    def predict(self, X):
+        return np.array([self._predict_single(x, self.root) for x in X])
+
+    def _predict_single(self, x, node):
+        if node.is_leaf():
+            return node.value
+        if x[node.feature] <= node.threshold:
+            return self._predict_single(x, node.left)
+        else:
+            return self._predict_single(x, node.right)
