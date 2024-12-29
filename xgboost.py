@@ -75,3 +75,38 @@ class DecisionTree:
             return self._predict_single(x, node.left)
         else:
             return self._predict_single(x, node.right)
+
+class XGBoost:
+    def __init__(self, n_estimators=100, learning_rate=0.1, max_depth=3, min_samples_split=2, reg_lambda=1.0):
+        self.n_estimators = n_estimators
+        self.learning_rate = learning_rate
+        self.max_depth = max_depth
+        self.min_samples_split = min_samples_split
+        self.reg_lambda = reg_lambda
+        self.trees = []
+
+    def _gradient(self, y, y_pred):
+        return y_pred - y
+
+    def _hessian(self, y, y_pred):
+        return np.ones_like(y)
+
+    def fit(self, X, y):
+        y_pred = np.zeros_like(y, dtype=float)  # Initial predictions
+        for _ in range(self.n_estimators):
+            grad = self._gradient(y, y_pred)
+            hess = self._hessian(y, y_pred)
+            tree = DecisionTree(
+            	max_depth=self.max_depth,
+            	min_samples_split=self.min_samples_split,
+            	reg_lambda=self.reg_lambda
+        	)
+            tree.fit(X, grad, hess)
+            self.trees.append(tree)
+            y_pred += self.learning_rate * tree.predict(X)
+
+    def predict(self, X):
+        y_pred = np.zeros(X.shape[0], dtype=float)
+        for tree in self.trees:
+            y_pred += self.learning_rate * tree.predict(X)
+        return y_pred
