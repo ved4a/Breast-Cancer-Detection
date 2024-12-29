@@ -5,6 +5,7 @@ from sklearn.metrics import accuracy_score
 
 from logistic_reg import LogisticRegression
 from neural_network import NeuralNetwork
+from xgboost import XGBoost
 
 import pandas as pd
 import numpy as np
@@ -104,3 +105,12 @@ plt.show()
 
 accuracy_nn = accuracy_score(y_test, y_pred_nn)
 print(f"Neural Network Accuracy: {accuracy_nn:.4f}")
+
+# XGBoost
+xgb = XGBoost(n_estimators=10, learning_rate=0.1, max_depth=3)
+xgb.fit(X_train, y_train)
+y_pred_xgb = xgb.predict(X_test)
+y_pred_xgb_binary = (y_pred_xgb >= 0.5).astype(int)
+
+accuracy_xgb = accuracy_score(y_test, y_pred_xgb_binary)
+print(f"XGBoost Accuracy: {accuracy_xgb:.4f}")
